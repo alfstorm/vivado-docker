@@ -1,0 +1,22 @@
+FROM @jessie-base-image@
+MAINTAINER @maintainer@
+
+# Use a locally downloaded Xilinx installer archive
+ADD Xilinx_Unified_2020.1_0602_1208.tar.gz /tmp/
+# Xilinx recommends recreating this config file for every release
+COPY xsetup_config_2020.1.txt /tmp/
+
+# Extract the archive so we can get to the contents
+RUN cd /tmp/Xilinx_Unified_2020.1_0602_1208 && \
+    sudo ./xsetup --batch Install \
+    --agree XilinxEULA,3rdPartyEULA,WebTalkTerms \
+    -c /tmp/xsetup_config_2020.1.txt && \
+    cd /tmp && \
+    sudo chown -R developer:developer /opt && \
+    sudo chown -R developer:developer /tmp && \
+    cd / && \
+    rm -rf /tmp/*
+
+# Install the license file
+# COPY Xilinx.lic /opt/Xilinx
+# ENV XILINXD_LICENSE_FILE /opt/Xilinx

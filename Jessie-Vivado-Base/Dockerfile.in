@@ -40,7 +40,6 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
         pip install intelhex && \
         echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
         locale-gen && \
-        gem install fpm && \
         apt-get clean
 
 # Sharing the x server with docker. See:
@@ -49,6 +48,7 @@ RUN export uid=${b_uid} gid=${b_gid} && \
     mkdir -p /home/developer && \
     echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
     echo "developer:x:${uid}:" >> /etc/group && \
+    mkdir -p /etc/sudoers.d && \
     echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
     chmod 0440 /etc/sudoers.d/developer && \
     chown ${uid}:${gid} /home/developer && \

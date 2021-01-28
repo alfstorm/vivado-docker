@@ -5,12 +5,12 @@
 # user name.
 
 DIR="$PWD"
-USR=`who mom likes | awk '{print $1}'`
+USR=$(ls -l $(tty) | awk '{print $3}')
 
 # --- Configure Here ---
-MAINTAINER="Devin Hughes <devin@jd2.com>"
-BASE_IMAGE_NAME="dkhughes/jessie-vivado-base:latest"
-XV_IMAGE_NAME="dkhughes/jessie-vivado-2015.4:latest"
+MAINTAINER="Alf Storm <astorm@nevion.com>"
+BASE_IMAGE_NAME="astorm/jessie-vivado-base:latest"
+XV_IMAGE_NAME="astorm/jessie-vivado-2020.1:latest"
 XV_SHARE_PATH=/home/"$USR"/docker-share/vivado
 
 # Populate the docker files with the config
@@ -19,8 +19,8 @@ sed "s|@maintainer@|$MAINTAINER|" \
     "$DIR"/Jessie-Vivado-Base/Dockerfile
 sed -e "s|@maintainer@|$MAINTAINER|" \
     -e "s|@jessie-base-image@|$BASE_IMAGE_NAME|" \
-    "$DIR"/Jessie-Vivado-2015.4/Dockerfile.in >\
-    "$DIR"/Jessie-Vivado-2015.4/Dockerfile
+    "$DIR"/Jessie-Vivado-2020.1/Dockerfile.in >\
+    "$DIR"/Jessie-Vivado-2020.1/Dockerfile
 
 # Now build the base image
 cd "$DIR"/Jessie-Vivado-Base
@@ -34,7 +34,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo Base image built. Building final image...
-cd "$DIR"/Jessie-Vivado-2015.4
+cd "$DIR"/Jessie-Vivado-2020.1
 docker build -t "$XV_IMAGE_NAME" .
 
 if [ $? -ne 0 ]; then
@@ -55,7 +55,7 @@ docker run --rm -ti -e DISPLAY=\$DISPLAY \
 --privileged -v /dev/bus/usb:/dev/bus/usb \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -v $XV_SHARE_PATH:/home/developer \
-$XV_IMG_SNAME 
+$XV_IMG_SNAME
 
 EOF
 
