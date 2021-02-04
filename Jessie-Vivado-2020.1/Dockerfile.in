@@ -20,3 +20,6 @@ RUN cd /tmp/Xilinx_Unified_2020.1_0602_1208 && \
 # Install the license file
 # COPY Xilinx.lic /opt/Xilinx
 # ENV XILINXD_LICENSE_FILE /opt/Xilinx
+
+# Add Vivado tools to path
+RUN echo "source /tools/Xilinx/Vivado/2020.1/settings64.sh" >> /etc/profile

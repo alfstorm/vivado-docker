@@ -48,12 +48,14 @@ RUN export uid=${b_uid} gid=${b_gid} && \
     mkdir -p /home/developer && \
     echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
     echo "developer:x:${uid}:" >> /etc/group && \
-    mkdir -p /etc/sudoers.d && \
     echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
     chmod 0440 /etc/sudoers.d/developer && \
     chown ${uid}:${gid} /home/developer && \
     chown -R ${uid}:${gid} /opt
 
-USER developer
-ENV HOME /home/developer
-WORKDIR /home/developer
+ENV USER=developer USER_ID=1000 USER_GID=1000
+
+COPY user-mapping.sh /
+RUN  chmod u+x /user-mapping.sh
+
+ENTRYPOINT ["/user-mapping.sh"]

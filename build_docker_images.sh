@@ -11,7 +11,8 @@ USR=$(ls -l $(tty) | awk '{print $3}')
 MAINTAINER="Alf Storm <astorm@nevion.com>"
 BASE_IMAGE_NAME="astorm/jessie-vivado-base:latest"
 XV_IMAGE_NAME="astorm/jessie-vivado-2020.1:latest"
-XV_SHARE_PATH=/home/"$USR"/docker-share/vivado
+# share path will reside inside user's HOME folder
+XV_SHARE_PATH=docker-share/vivado
 
 # Populate the docker files with the config
 sed "s|@maintainer@|$MAINTAINER|" \
@@ -51,10 +52,11 @@ cat << EOF > run_vivado.sh
 #!/bin/sh
 # Runs Vivado and cleans up when done.
 docker run --rm -ti -e DISPLAY=\$DISPLAY \
---user developer \
+-e HOST_USER_ID=\`id -u\` -e HOST_USER_GID=\`id -g\` \
 --privileged -v /dev/bus/usb:/dev/bus/usb \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
--v $XV_SHARE_PATH:/home/developer \
+-v \$HOME/.Xauthority:/home/developer/.Xauthority \
+-v \$HOME/$XV_SHARE_PATH:/home/developer \
 $XV_IMG_SNAME
 
 EOF
