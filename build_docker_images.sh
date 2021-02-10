@@ -9,22 +9,22 @@ USR=$(ls -l $(tty) | awk '{print $3}')
 
 # --- Configure Here ---
 MAINTAINER="Alf Storm <astorm@nevion.com>"
-BASE_IMAGE_NAME="astorm/jessie-vivado-base:latest"
-XV_IMAGE_NAME="astorm/jessie-vivado-2020.1:latest"
+BASE_IMAGE_NAME="astorm/buster-vivado-base:latest"
+XV_IMAGE_NAME="astorm/buster-vivado-2020.1:latest"
 # share path will reside inside user's HOME folder
 XV_SHARE_PATH=docker-share/vivado
 
 # Populate the docker files with the config
 sed "s|@maintainer@|$MAINTAINER|" \
-    "$DIR"/Jessie-Vivado-Base/Dockerfile.in > \
-    "$DIR"/Jessie-Vivado-Base/Dockerfile
+    "$DIR"/Buster-Vivado-Base/Dockerfile.in > \
+    "$DIR"/Buster-Vivado-Base/Dockerfile
 sed -e "s|@maintainer@|$MAINTAINER|" \
-    -e "s|@jessie-base-image@|$BASE_IMAGE_NAME|" \
-    "$DIR"/Jessie-Vivado-2020.1/Dockerfile.in >\
-    "$DIR"/Jessie-Vivado-2020.1/Dockerfile
+    -e "s|@buster-base-image@|$BASE_IMAGE_NAME|" \
+    "$DIR"/Buster-Vivado-2020.1/Dockerfile.in >\
+    "$DIR"/Buster-Vivado-2020.1/Dockerfile
 
 # Now build the base image
-cd "$DIR"/Jessie-Vivado-Base
+cd "$DIR"/Buster-Vivado-Base
 docker build --build-arg b_uid=`id -u $USR` \
     --build-arg b_gid=`id -g $USR` \
     -t "$BASE_IMAGE_NAME" .
@@ -35,7 +35,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo Base image built. Building final image...
-cd "$DIR"/Jessie-Vivado-2020.1
+cd "$DIR"/Buster-Vivado-2020.1
 docker build -t "$XV_IMAGE_NAME" .
 
 if [ $? -ne 0 ]; then

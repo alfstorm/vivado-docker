@@ -1,4 +1,4 @@
-FROM @jessie-base-image@
+FROM @buster-base-image@
 MAINTAINER @maintainer@
 
 # Use a locally downloaded Xilinx installer archive
