@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:buster
 MAINTAINER @maintainer@
 
 ARG b_uid
@@ -27,6 +27,7 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
         libxext6 \
         libxrender1 \
         libxtst6 \
+        libtinfo-dev \
         libgtk2.0-0 \
         build-essential \
         unzip \
@@ -37,10 +38,11 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
         protobuf-compiler \
         python-protobuf \
         python-pip && \
-        pip install intelhex && \
-        echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-        locale-gen && \
-        apt-get clean
+    pip install intelhex && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen && \
+    apt-get clean && \
+    ln -s /lib/x86_64-linux-gnu/libtinfo.so.6 /lib/x86_64-linux-gnu/libtinfo.so.5
 
 # Sharing the x server with docker. See:
 # http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/

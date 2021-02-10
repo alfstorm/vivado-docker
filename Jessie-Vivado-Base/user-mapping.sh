@@ -30,4 +30,4 @@ chown -R ${USER_ID}:${USER_GID} ${USER_HOME}
 
 pwconv
 
-exec su - "${USER}"
+exec su --whitelist-environment=DISPLAY --login "${USER}"
