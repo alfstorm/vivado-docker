@@ -39,11 +39,11 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
     pip install intelhex && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen && \
+    # update packages with security fixes
+    apt-get -y install $(debsecan --suite buster --format packages --only-fixed | sed '/.*chromium.*/d') && \
     apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     ln -s /lib/x86_64-linux-gnu/libtinfo.so.6 /lib/x86_64-linux-gnu/libtinfo.so.5
-
-# update packages with security fixes
-RUN apt-get -y install $(debsecan --suite buster --format packages --only-fixed)
 
 # Sharing the x server with docker. See:
 # http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
