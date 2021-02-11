@@ -16,6 +16,7 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
     /etc/apt/apt.conf.d/01norecommend && \
     apt-get update && \
     apt-get -y install \
+        debsecan \
         bzip2 \
         libc6-i386 \
         git \
@@ -43,6 +44,9 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
     locale-gen && \
     apt-get clean && \
     ln -s /lib/x86_64-linux-gnu/libtinfo.so.6 /lib/x86_64-linux-gnu/libtinfo.so.5
+
+# update packages with security fixes
+RUN apt-get -y install $(debsecan --suite buster --format packages --only-fixed)
 
 # Sharing the x server with docker. See:
 # http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
