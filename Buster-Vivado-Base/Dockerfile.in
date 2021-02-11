@@ -13,29 +13,29 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
     /etc/apt/apt.conf.d/01norecommend && \
     apt-get update && \
     apt-get -y install \
-        debsecan \
+        build-essential \
         bzip2 \
-        libc6-i386 \
+        debsecan \
         git \
+        libc6-i386 \
         libfontconfig1 \
         libglib2.0-0 \
-        sudo \
-        nano \
-        locales \
+        libgtk2.0-0 \
+        libprotobuf-dev \
+        libtinfo-dev \
         libxext6 \
         libxrender1 \
         libxtst6 \
-        libtinfo-dev \
-        libgtk2.0-0 \
-        build-essential \
-        unzip \
+        locales \
+        nano \
+        pkg-config \
+        protobuf-compiler \
+        python-pip \
+        python-protobuf \
         ruby \
         ruby-dev \
-        pkg-config \
-        libprotobuf-dev \
-        protobuf-compiler \
-        python-protobuf \
-        python-pip && \
+        sudo \
+        unzip && \
     pip install intelhex && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen && \
