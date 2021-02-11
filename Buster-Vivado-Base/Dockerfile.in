@@ -1,5 +1,5 @@
 FROM debian:buster-20210208
-MAINTAINER @maintainer@
+LABEL maintainer="@maintainer@"
 
 ENV TERM xterm
 
